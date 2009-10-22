@@ -13,6 +13,7 @@ RR::Initializer::run do |config|
     :database => 'SCOTT',
     :username => 'scott',
     :password => 'tiger',
+    # :log_sql  => STDOUT,
     :host     => '172.16.1.1'
   }
 
@@ -21,6 +22,7 @@ RR::Initializer::run do |config|
     :database => 'SCOTT',
     :username => 'scott',
     :password => 'tiger',
+    # :log_sql  => "right.log",
     :host     => '172.16.1.2'
   }
 

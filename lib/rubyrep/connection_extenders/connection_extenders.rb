@@ -59,6 +59,10 @@ module RR
         DummyActiveRecord.establish_connection(config)
       end
       connection = DummyActiveRecord.connection
+      
+      if config[:log_sql]
+        connection.instance_variable_set(:@logger, Logger.new(config[:log_sql]))
+      end
 
       # Delete the database connection from ActiveRecords's 'memory'
       ActiveRecord::Base.connection_handler.connection_pools.delete DummyActiveRecord.name
@@ -104,7 +108,7 @@ module RR
     # A new database connection is created only if no according cached connection
     # is available.
     def self.db_connect(config)
-      config_dump = Marshal.dump config.reject {|key, | [:proxy_host, :proxy_port].include? key}
+      config_dump = Marshal.dump config.reject {|key, | [:proxy_host, :proxy_port, :log_sql].include? key}
       config_checksum = Digest::SHA1.hexdigest(config_dump)
       @@connection_cache ||= {}
       cached_db_connection = connection_cache[config_checksum]
